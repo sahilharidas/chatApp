@@ -1,0 +1,121 @@
+Manager:
+	ConnectPage:
+	InfoPage:
+	ChatPage:
+
+<ConnectPage>
+	name: "Connect"
+
+	canvas.before:
+		Color:
+			rgba: (.1, .1, .1, 1)
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+	GridLayout:
+		cols: 2
+
+		Label:
+			text: "IP:"
+
+		TextInput:
+			id: ip_field
+			multiline: False
+			text: root.getData()[0]
+
+		Label:
+			text: "Port:"
+
+		TextInput:
+			id: port_field
+			multiline: False
+			text: root.getData()[1]
+
+		Label:
+			text: "Username:"
+
+		TextInput:
+			id: user_field
+			multiline: False
+			text: root.getData()[2]
+
+		Label:
+			id: sp
+
+		Button:
+			id: join_btn
+			text: "Join"
+			on_release: root.join_button()
+			on_release: app.root.current = "Info"
+			#on_release: root.manager.get_screen('Info').ids.msg_lbl.text = root.join_button()
+
+<InfoPage>
+	id: info_pg
+	name: "Info"
+	cols: 1
+	canvas.before:
+		Color:
+			rgba: (.1, .1, .1, 1)
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+	Label:
+		id: msg_lbl
+		size_hint_x: 0.9
+		color: (1, 1, 1, 1)
+		#halighn: "center"
+		#valign: "middle"
+		#font_size: 30
+		#width: self.update_text_width
+
+<ChatPage>
+	id: chat_page
+	name: "Chat"
+	BoxLayout:
+		orientation: "vertical"
+
+		#Label:
+		#	size_hint_y: 0.9
+		#	height: self.size[1] * 0.9
+
+		ScrollView:
+			id: scroll_view
+			size_hint_y: 0.9
+			BoxLayout:
+				id: chat_layout
+				orientation: "vertical"
+				#size_hint_y: None
+
+				Label:
+					canvas.before:
+						Color:
+							rgba: (.1, .1, .1, 1)
+						Rectangle:
+							size: self.size
+							pos: self.pos
+					id: chat_history
+					size_hint_y: 0.99
+					text_size: self.size
+					markup: True
+
+				Label:
+					id: scroll_lbl
+					size_hint_y: 0.01
+
+
+		BoxLayout:
+			size_hint_y: 0.1
+			TextInput:
+				id: msg_field
+				size_hint_x: 0.8
+				#height: self.size[1] * 0.8
+				multiline: False
+				focus: True
+				on_text_validate: root.send_message()
+
+			Button:
+				size_hint_x: 0.2
+				text: "Send"
+				on_release: root.send_message()
